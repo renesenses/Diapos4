@@ -26,9 +26,12 @@ sub set_file_image_extension {
 		my $info = $exifTool_object->ImageInfo($File::Find::name);
 		my $MimeType = $exifTool_object->GetValue('MIMEType', 'ValueConv');
 		
-		if ( (defined $MimeType) && ($MimeType =~ /^(image)\/([^\/]+)/ ) && ( $#spath == 6)) {
+		if ( (defined $MimeType) && ($MimeType =~ /^(image)\/([^\/]+)/ )) {
+			$sext = lc($2);
+			print "EXT : ",$sext,"\n";
 			splice( @spath,3,1,@REL_PICTURES_STEP_1_DIR );
-			my $tfilename = File::Spec->catdir(@spath,$sfile).".".lc($2);
+			my $tfilename = File::Spec->catdir(@spath,$sfile).".".$sext;
+			print "TAGET : ",$tfilename,"\n";
 			if (! (-e File::Spec->catdir(@spath)) ) {
 				mkpath(File::Spec->catdir(@spath));
 			}	
